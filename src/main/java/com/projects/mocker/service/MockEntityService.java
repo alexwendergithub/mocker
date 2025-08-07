@@ -4,7 +4,7 @@ import com.projects.mocker.model.MockEntity;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import com.projects.mocker.repository.MockRepository;
+import com.projects.mocker.repository.MockEntityRepository;
 
 import java.util.List;
 import java.util.Optional;
@@ -12,32 +12,32 @@ import java.util.Optional;
 @Service
 @Transactional
 @RequiredArgsConstructor
-public class MockService {
-    private final MockRepository mockRepository;
+public class MockEntityService {
+    private final MockEntityRepository mockEntityRepository;
 
     public Optional<MockEntity> findById(String mockId) {
-        return mockRepository.findById(mockId);
+        return mockEntityRepository.findById(mockId);
     }
 
     public List<MockEntity> findAll() {
-        return mockRepository.findAll();
+        return mockEntityRepository.findAll();
     }
 
     public String save(MockEntity mockEntity) {
-        if (mockRepository.existsById(mockEntity.getId())) {
+        if (mockEntityRepository.existsById(mockEntity.getId())) {
             return "Id already in use";
         }
 
-        mockRepository.save(mockEntity);
+        mockEntityRepository.save(mockEntity);
         return "Saved mock successfully";
     }
 
     public String delete(String mockId){
-        if (!mockRepository.existsById(mockId)) {
+        if (!mockEntityRepository.existsById(mockId)) {
             return "No mock created with " + mockId + " id";
         }
 
-        mockRepository.deleteById(mockId);
+        mockEntityRepository.deleteById(mockId);
         return "Deleted mock successfully";
     }
 }

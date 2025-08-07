@@ -1,6 +1,6 @@
 package com.projects.mocker.controller;
 
-import com.projects.mocker.service.MockService;
+import com.projects.mocker.service.MockEntityService;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/{mockName}")
 @AllArgsConstructor
 public class MockController {
-    private MockService mockService;
+    private MockEntityService mockEntityService;
 
     @GetMapping("/")
     public String getMockType() {
