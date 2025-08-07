@@ -14,7 +14,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @Getter
 @Setter
 public class MockEntity {
-    @Id Long id;
+    @Id String id;
     @Transient int quantity;
-    JsonObject dataInfo;
+    String dataInfo;
 }

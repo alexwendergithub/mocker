@@ -23,7 +23,21 @@ public class MockService {
         return mockRepository.findAll();
     }
 
-    public MockEntity save(MockEntity mockEntity) {
-        return mockRepository.save(mockEntity);
+    public String save(MockEntity mockEntity) {
+        if (mockRepository.existsById(mockEntity.getId())) {
+            return "Id already in use";
+        }
+
+        mockRepository.save(mockEntity);
+        return "Saved mock successfully";
+    }
+
+    public String delete(String mockId){
+        if (!mockRepository.existsById(mockId)) {
+            return "No mock created with " + mockId + " id";
+        }
+
+        mockRepository.deleteById(mockId);
+        return "Deleted mock successfully";
     }
 }
