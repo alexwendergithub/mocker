@@ -1,42 +1,66 @@
 package com.projects.mocker.controller;
 
+import com.projects.mocker.model.MockEntity;
+import com.projects.mocker.service.MockEntityService;
 import com.projects.mocker.service.MockService;
 import lombok.AllArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/{mockName}")
 @AllArgsConstructor
 public class MockController {
     private MockService mockService;
+    private MockEntityService mockEntityService;
 
     @GetMapping("/")
-    public String getMockType() {
-        System.out.println("expected type");
-        return "expected type";
+    public ResponseEntity<String> getMockType(@PathVariable String mockName) {
+        Optional<MockEntity> mockEntity = mockEntityService.findById(mockName);
+        return mockEntity.map(entity -> ResponseEntity.ok().body(entity.getDataInfo()))
+                .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
-    @GetMapping("/{mock}")
-    public String getMock() {
-        System.out.println("test");
-        return "test";
+    @GetMapping("/{mockId}")
+    public ResponseEntity<String> getMock(@PathVariable String mockName, @PathVariable String mockId) {
+        String result = mockService.getMockById(mockId, mockName);
+
+        if (result == null || result.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(result);
     }
 
-    @PostMapping("/{mock}")
-    public String addMock(){
-        System.out.println("test2");
-        return "test2";
+    @PostMapping("/")
+    public ResponseEntity<String> addMock(@PathVariable String mockName,
+                                          @RequestBody String json){
+        String result = mockService.save(json,mockName);
+        if (result == null || result.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(result);
     }
 
-    @PutMapping("/{mock}")
-    public String editMock(){
-        System.out.println("test3");
-        return "test3";
+    @PutMapping("/{mockId}")
+    public ResponseEntity<String> editMock(@PathVariable String mockName,
+                           @PathVariable String mockId,
+                           @RequestBody String json){
+
+        String result = mockService.edit(mockId,mockName,json);
+        if (result == null || result.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(result);
     }
 
-    @DeleteMapping("/{mock}")
-    public String deleteMock(){
-        System.out.println("test4");
-        return "test4";
+    @DeleteMapping("/{mockId}")
+    public ResponseEntity<String> deleteMock(@PathVariable String mockName, @PathVariable String mockId){
+        String result = mockService.delete(mockId,mockName);
+        if (result == null || result.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(result);
     }
 }
