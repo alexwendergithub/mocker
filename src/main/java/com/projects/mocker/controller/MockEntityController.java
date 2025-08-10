@@ -36,13 +36,6 @@ public class MockEntityController {
                 .body(result);
     }
 
-    @PutMapping("/{mockId}")
-    public String editMapping(){
-        System.out.println("test3");
-        //{REMAKE FAKE DATA DO MOCK IF NECESSARY}
-        return "test3";
-    }
-
     @DeleteMapping("/{mockId}")
     public ResponseEntity<String> deleteMapping(@PathVariable String mockId){
         var result = mockEntityService.delete(mockId);
