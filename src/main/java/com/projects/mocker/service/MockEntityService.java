@@ -14,6 +14,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class MockEntityService {
     private final MockEntityRepository mockEntityRepository;
+    private final MockService mockService;
 
     public Optional<MockEntity> findById(String mockId) {
         return mockEntityRepository.findById(mockId);
@@ -27,7 +28,7 @@ public class MockEntityService {
         if (mockEntityRepository.existsById(mockEntity.getId())) {
             return "Id already in use";
         }
-
+        mockService.addFakeData(mockEntity.getQuantity(),mockEntity.getId(), mockEntity.getDataInfo());
         mockEntityRepository.save(mockEntity);
         return "Saved mock successfully";
     }
@@ -36,7 +37,6 @@ public class MockEntityService {
         if (!mockEntityRepository.existsById(mockId)) {
             return "No mock created with " + mockId + " id";
         }
-
         mockEntityRepository.deleteById(mockId);
         return "Deleted mock successfully";
     }

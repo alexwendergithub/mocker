@@ -4,9 +4,11 @@ import com.projects.mocker.model.MockEntity;
 import com.projects.mocker.service.MockEntityService;
 import com.projects.mocker.service.MockService;
 import lombok.AllArgsConstructor;
+import org.bson.Document;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -15,6 +17,11 @@ import java.util.Optional;
 public class MockController {
     private MockService mockService;
     private MockEntityService mockEntityService;
+
+    @GetMapping("")
+    public  ResponseEntity<List<Document>>getAllMocks(@PathVariable String mockName){
+        return ResponseEntity.ok().body(mockService.findAll(mockName));
+    }
 
     @GetMapping("/")
     public ResponseEntity<String> getMockType(@PathVariable String mockName) {
